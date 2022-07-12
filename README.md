@@ -1,70 +1,61 @@
-# Getting Started with Create React App
+Hi everyone, here's a way to quickly get a react app up and running using Netlify, and then some flags to create in LaunchDarkly to test and demo with.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+1. Fork this repo to your account
+2. Go to your LaunchDarkly Instance
+3. In LD, go to Account settings > Projects > Create Project
+	- Give it a name, check the SDKs using Client-Side ID box
+	- Details on creating project: https://docs.launchdarkly.com/home/organize/projects#creating-new-projects
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# Connecting Netlify
+1. Create a https://www.netlify.com/ account if you don't have one yet
+2. Add new Site, Import Existing Project
+  - It's easiest to sync directly with your Github, and you have the ability to control what repos Netlify has access to
+3. Select the ld-demo-app repo and branch
+4. Lets give it an appropriate name.
+	- In site settings > general > site details > site information > change site name
+	- this will also be the domain name
+5. Next, go to Build and Deploy Tab
+	- Build & Deploy > Continuous Deployment > Build Settings > Build Command
+	- Change Command to CI=false npm run build
+6. Next scroll down to Environment variables
+	- Add a new variable - REACT_APP_LD_SDK_KEY
+7. Add your SDK key from LaunchDarkly as the value
+		- In LaunchDarklyD, go to the environment you want to test from
+		- Press CMD+K (Mac) or CTRL+K (PC)
+		- Click Copy SDK Key for the environment
+		- Click Client-side-id
+    - Add copied sdk-key value in Netlify
+    - Save
+ 
+# Creating the flags in LaunchDarkly
+ - Go to Test Environment. Now, lets create some flags:
+	1. Create a Feature Flag - QR Code
+		- name: qrcode
+		- key: qrcode
+		- description: "This flag enables the view of the QR Code on our application canvas for mobile device viewing"
+		- variations: true: qrcode on, false: qrcode off
+	2. Create a Feature Flag - Logo Version
+		- name: logoversion
+		- key: logoversion
+		- description: "This flag controls which logo is visible within the application"
+		- variations: true: Show Toggle Logo , false: Default LaunchDarkly Logo
+	3. Create a Feature Flag - Card Show
+		- name: cardshow
+		- key: cardshow
+		- description: "This flag controls the visibility of the release cards on the bottom of the UI "
+		- variations: true: Show Release Cards, false: Disable Card Views
+	4. Create a Feature Flag - Upper Image
+		- name: upperimage
+		- key: upperimage
+		- description: "Show the upper image on page"
+		- variations: true: Show Image, false: Disable Image
+	5. Create a Feature Flag - Login
+		- name: login
+		- key: login
+		- description: "Show the login box for user targeting"
+		- variations: true: Login enabled, false: Login Disabled
+	6. Create a Feature Flag - Production Header
+		- name: prodHeader
+		- key: prodHeader
+		- description: "Enables the production header view in the UI"
+		- variations: true: "Show New Header Design" , false: Show Old Header Design
